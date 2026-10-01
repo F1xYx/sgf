@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------ Semantic theme tokens ------------------------ */
+
+:root {
+  --bg: #e9edf6;
+  --coal: rgba(255, 255, 255, 0.88);
+  --card: rgba(255, 255, 255, 0.72);
+  --card2: rgba(255, 255, 255, 0.92);
+  --line: rgba(20, 28, 60, 0.1);
+  --soft: rgba(20, 28, 60, 0.055);
+  --soft2: rgba(20, 28, 60, 0.095);
+  --stroke: rgba(20, 28, 60, 0.11);
+  --snow: #131735;
+  --fog: #565e7c;
+  --dim: #8a91ab;
+  --accent: #0057d0;
+  --violet: #6c63f0;
+  --mint: #0da768;
+  --amber: #e89114;
+  --sky: #0ea0dc;
+  --rose: #e0355f;
+  --hero-a: #0f6ae0;
+  --hero-b: #0047ab;
+  --nav-fade: rgba(233, 237, 246, 0.96);
+  --a1: rgba(56, 196, 120, 0.38);
+  --a2: rgba(59, 130, 246, 0.34);
+  --a3: rgba(168, 85, 247, 0.24);
+  --aurora-blend: normal;
+}
+
+.dark {
+  --bg: #070b14;
+  --coal: rgba(13, 17, 30, 0.85);
+  --card: rgba(17, 22, 38, 0.55);
+  --card2: rgba(24, 30, 52, 0.72);
+  --line: rgba(148, 163, 184, 0.14);
+  --soft: rgba(255, 255, 255, 0.05);
+  --soft2: rgba(255, 255, 255, 0.085);
+  --stroke: rgba(255, 255, 255, 0.1);
+  --snow: #f4f6fd;
+  --fog: #9aa1ba;
+  --dim: #626a85;
+  --accent: #62a4ff;
+  --violet: #9381ff;
+  --mint: #45db92;
+  --amber: #ffb84d;
+  --sky: #63c6ff;
+  --rose: #ff6c85;
+  --hero-a: #2f6fe4;
+  --hero-b: #0a2f86;
+  --nav-fade: rgba(7, 11, 20, 0.96);
+  --a1: rgba(16, 185, 129, 0.4);
+  --a2: rgba(59, 130, 246, 0.42);
+  --a3: rgba(139, 92, 246, 0.38);
+  --aurora-blend: screen;
+}
+
+@theme inline {
+  --font-sans: var(--font-manrope), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-unbounded), "Arial Black", sans-serif;
+
+  --color-ink: var(--bg);
+  --color-coal: var(--coal);
+  --color-card: var(--card);
+  --color-card2: var(--card2);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-soft2: var(--soft2);
+  --color-stroke: var(--stroke);
+  --color-snow: var(--snow);
+  --color-fog: var(--fog);
+  --color-dim: var(--dim);
+  --color-lime: var(--accent);
+  --color-violet: var(--violet);
+  --color-mint: var(--mint);
+  --color-amber: var(--amber);
+  --color-sky: var(--sky);
+  --color-rose: var(--rose);
+  --color-heroa: var(--hero-a);
+  --color-herob: var(--hero-b);
+
+  --animate-pulse-dot: pulse-dot 1.5s ease-in-out infinite;
+  --animate-float: aurora-float 11s ease-in-out infinite;
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.7);
+    }
+  }
+  @keyframes aurora-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -22px, 0);
+    }
+  }
+}
+
+/* ------------------------------- Base -------------------------------- */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.45s ease, color 0.45s ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
+input[type="time"],
+input[type="date"] {
+  color-scheme: light;
+}
+.dark input[type="time"],
+.dark input[type="date"] {
+  color-scheme: dark;
+}
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+}
+
+/* ------------------------------ Aurora ------------------------------- */
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bg);
+  transition: background-color 0.45s ease;
+}
+
+.aurora-curtain {
+  position: absolute;
+  top: -50%;
+  width: 200%;
+  height: 160%;
+  border-radius: 50%;
+  filter: blur(72px);
+  mix-blend-mode: var(--aurora-blend);
+  will-change: transform;
+  transform: translateZ(0);
+  transition: background 0.5s ease;
+}
+@media (max-width: 768px) {
+  .aurora-curtain {
+    filter: blur(52px);
+  }
+}
+
+.aurora-curtain.c1 {
+  left: -50%;
+  background: radial-gradient(
+    ellipse 60% 100% at 50% 50%,
+    var(--a1),
+    transparent 70%
+  );
+  animation: aurora-move-1 19s ease-in-out infinite alternate;
+}
+.aurora-curtain.c2 {
+  left: -20%;
+  background: radial-gradient(
+    ellipse 50% 90% at 50% 50%,
+    var(--a2),
+    transparent 70%
+  );
+  animation: aurora-move-2 23s ease-in-out infinite alternate;
+}
+.aurora-curtain.c3 {
+  left: 10%;
+  background: radial-gradient(
+    ellipse 55% 100% at 50% 50%,
+    var(--a3),
+    transparent 70%
+  );
+  animation: aurora-move-3 27s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-move-1 {
+  0% {
+    transform: translate(-10%, -5%) rotate(-5deg);
+  }
+  100% {
+    transform: translate(10%, 5%) rotate(5deg);
+  }
+}
+@keyframes aurora-move-2 {
+  0% {
+    transform: translate(10%, -10%) rotate(5deg);
+  }
+  100% {
+    transform: translate(-10%, 10%) rotate(-5deg);
+  }
+}
+@keyframes aurora-move-3 {
+  0% {
+    transform: translate(-5%, 10%) rotate(0deg);
+  }
+  100% {
+    transform: translate(15%, -5%) rotate(10deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-curtain {
+    animation: none;
+  }
+}
+
+/* ------------------------------- Misc -------------------------------- */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dark .noise-overlay {
+  opacity: 0.045;
+}
+
+.nav-fade {
+  background: linear-gradient(to top, var(--nav-fade) 42%, transparent);
+}
+
+.text-balance {
+  text-wrap: balance;
+}

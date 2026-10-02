@@ -26,7 +26,7 @@ export default function BottomNav({
   onChange: (t: TabId) => void;
 }) {
   return (
-    <nav aria-label="Основная навигация" className="flex items-center gap-1 rounded-[28px] border border-stroke bg-coal/90 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+    <nav aria-label="Основная навигация" className="grid grid-cols-3 items-stretch gap-1 rounded-[26px] border border-stroke bg-coal/95 p-1.5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
       {TABS.map((t) => {
         const active = t.id === tab;
         const Icon = t.icon;
@@ -50,7 +50,7 @@ export default function BottomNav({
           >
             <motion.span
               whileTap={{ scale: 0.88 }}
-              className="relative flex h-8 w-16 items-center justify-center"
+              className="relative flex h-8 w-full items-center justify-center"
             >
               {active && (
                 <motion.span

@@ -396,8 +396,10 @@ function TimerCard({
 
   return (
     <div
+      role="status"
+      aria-live="polite"
       className={cn(
-        "relative overflow-hidden rounded-[30px] p-4",
+        "relative overflow-hidden rounded-[30px] p-4", 
         isEnd
           ? "bg-[linear-gradient(140deg,var(--hero-a),var(--hero-b))] text-white shadow-[0_22px_50px_-20px_rgba(0,71,171,0.6)]"
           : "bg-card backdrop-blur-xl",

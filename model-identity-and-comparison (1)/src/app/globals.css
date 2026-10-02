@@ -141,6 +141,46 @@ textarea {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 62%, transparent);
+  outline-offset: 3px;
+}
+
+/* Keep interactive surfaces tactile without making the interface noisy. */
+@media (hover: hover) {
+  button:not(:disabled):hover {
+    filter: brightness(1.06);
+  }
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* A quieter scrollbar keeps the app feeling like a native schedule. */
+main {
+  scrollbar-width: thin;
+  scrollbar-color: var(--stroke) transparent;
+}
+main::-webkit-scrollbar {
+  width: 5px;
+}
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+main::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--stroke);
+}
+
 input[type="time"],
 input[type="date"] {
   color-scheme: light;

@@ -3,6 +3,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CloudOff, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PAIRS } from "@/lib/schedule";
+import { SEED_GROUP, SEED_LESSONS } from "@/lib/seed-data";
 import {
   addDays,
   getWeekInfo,
@@ -41,13 +43,20 @@ function mapLesson(r: ApiLesson): LessonT {
 }
 
 export default function ScheduleApp() {
-  const [lessons, setLessons] = useState<LessonT[] | null>(null);
+  // Render the bundled demo immediately. The API can enhance it later, but
+  // the first paint must never depend on a database or a network request.
+  const [lessons, setLessons] = useState<LessonT[]>(() =>
+    SEED_LESSONS.map((lesson, id) => {
+      const pair = PAIRS.find((p) => p.n === lesson.pairNumber) ?? PAIRS[0];
+      return { ...lesson, id: id + 1, startTime: pair.start, endTime: pair.end };
+    }),
+  );
   const [settings, setSettings] = useState<SettingsT>({
-    group: "…",
-    semesterStart: "",
+    group: SEED_GROUP,
+    semesterStart: "2025-09-01",
   });
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [now, setNow] = useState<Date | null>(null);
+  const [now, setNow] = useState<Date>(() => new Date());
 
   const [tab, setTab] = useState<TabId>("schedule");
   const [parity, setParity] = useState<WeekParity>("odd");

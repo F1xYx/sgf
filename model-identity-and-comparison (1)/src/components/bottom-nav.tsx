@@ -1,23 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { BellRing, CalendarDays, SlidersHorizontal } from "lucide-react";
 import { cn } from "./ui-bits";
 
 export type TabId = "schedule" | "bells" | "more";
 
-const TABS: Array<{
-  id: TabId;
-  label: string;
-  icon: typeof CalendarDays;
-}> = [
-  { id: "schedule", label: "Расписание", icon: CalendarDays },
-  { id: "bells", label: "Звонки", icon: BellRing },
-  { id: "more", label: "Ещё", icon: SlidersHorizontal },
+const TABS = [
+  { id: "schedule" as const, label: "Расписание", icon: CalendarDays },
+  { id: "bells" as const, label: "Звонки", icon: BellRing },
+  { id: "more" as const, label: "Ещё", icon: SlidersHorizontal },
 ];
 
-/** Material You navigation bar: pill indicator + always-visible labels,
- *  плавающая «док-панель» в духе iOS. */
+/** Compact, predictable Material-style navigation bar. */
 export default function BottomNav({
   tab,
   onChange,
@@ -26,54 +20,29 @@ export default function BottomNav({
   onChange: (t: TabId) => void;
 }) {
   return (
-    <nav aria-label="Основная навигация" className="grid grid-cols-3 items-stretch gap-1 rounded-[26px] border border-stroke bg-coal/95 p-1.5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-      {TABS.map((t) => {
-        const active = t.id === tab;
-        const Icon = t.icon;
+    <nav
+      aria-label="Основная навигация"
+      className="grid min-h-[72px] grid-cols-3 gap-1 rounded-[26px] border border-stroke bg-coal/95 p-1.5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+    >
+      {TABS.map(({ id, label, icon: Icon }) => {
+        const active = id === tab;
         return (
           <button
-            key={t.id}
+            key={id}
             type="button"
-            onClick={() => {
-              if (!active) {
-                try {
-                  navigator.vibrate?.(6);
-                } catch {
-                  /* noop */
-                }
-                onChange(t.id);
-              }
-            }}
             aria-current={active ? "page" : undefined}
-            aria-label={t.label}
-            className="flex min-h-14 flex-1 flex-col items-center gap-1 rounded-2xl py-1 transition-transform active:scale-95"
+            aria-label={label}
+            onClick={() => onChange(id)}
+            className={cn(
+              "flex min-h-[60px] min-w-0 touch-manipulation flex-col items-center justify-center gap-1 rounded-[21px] px-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime focus-visible:ring-offset-2 focus-visible:ring-offset-ink",
+              active
+                ? "bg-lime/20 text-lime"
+                : "text-fog hover:bg-soft2 hover:text-snow active:bg-soft2",
+            )}
           >
-            <motion.span
-              whileTap={{ scale: 0.88 }}
-              className="relative flex h-8 w-full items-center justify-center"
-            >
-              {active && (
-                <motion.span
-                  layoutId="nav-pill"
-                  className="absolute inset-0 rounded-full bg-lime/25"
-                  transition={{ type: "spring", stiffness: 480, damping: 38 }}
-                />
-              )}
-              <Icon
-                className={cn(
-                  "relative z-10 size-5",
-                  active ? "text-lime" : "text-fog",
-                )}
-                strokeWidth={active ? 2.5 : 2.1}
-              />
-            </motion.span>
-            <span
-              className={cn(
-                "text-[10.5px] font-bold tracking-wide",
-                active ? "text-snow" : "text-fog",
-              )}
-            >
-              {t.label}
+            <Icon className="size-[21px]" strokeWidth={active ? 2.7 : 2.1} />
+            <span className="truncate text-[11px] font-bold leading-none">
+              {label}
             </span>
           </button>
         );

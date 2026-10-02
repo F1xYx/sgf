@@ -70,6 +70,8 @@ export default function ScheduleApp() {
           : sysDark
             ? "dark"
             : "light";
+      // Theme hydration intentionally updates React state after localStorage is read.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(t);
       document.documentElement.classList.toggle("dark", t === "dark");
     } catch {
@@ -92,6 +94,8 @@ export default function ScheduleApp() {
 
   /* ------------------------------ clock ------------------------------ */
   useEffect(() => {
+    // Start the client clock after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNow(new Date());
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
@@ -112,6 +116,8 @@ export default function ScheduleApp() {
   }, []);
 
   useEffect(() => {
+    // Fetching is the effect's external synchronization; it sets loading state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 

@@ -42,6 +42,9 @@ function mapLesson(r: ApiLesson): LessonT {
   };
 }
 
+// Stable SSR value prevents a hydration mismatch before the live clock starts.
+const INITIAL_NOW = new Date("2025-09-01T09:00:00");
+
 export default function ScheduleApp() {
   // Render the bundled demo immediately. The API can enhance it later, but
   // the first paint must never depend on a database or a network request.
@@ -56,7 +59,7 @@ export default function ScheduleApp() {
     semesterStart: "2025-09-01",
   });
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [now, setNow] = useState<Date>(() => new Date());
+  const [now, setNow] = useState<Date>(INITIAL_NOW);
 
   const [tab, setTab] = useState<TabId>("schedule");
   const [parity, setParity] = useState<WeekParity>("odd");
